@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hz Generator</title>
+    <title>Hz Generator v3</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css"/>
@@ -81,8 +81,6 @@
             <label for="volume">Volume:</label>
             <input type="range" class="form-control-range slider" id="volume" min="0" max="100" value="50">
         </div>
-
-
         <div class="text-center">
             <button id="playButton" class="btn btn-primary rounded-pill">Play</button>
             <button id="stopButton" class="btn btn-danger rounded-pill">Stop</button>
@@ -95,18 +93,18 @@
             <button class="btn btn-secondary rounded-pill preset-button" data-frequency="20000">20000 Hz</button>
         </div>
 
-        <!-- New Separate Random Hz System Section -->
+        <!-- Random Hz Generator Section -->
         <div class="container mt-5">
-            <h2 class="text-center">Separate Random Hz Generator</h2>
+            <h2 class="text-center">Random Hz Generator</h2>
             <div class="form-group">
-                <label for="minHzSeparate">Min Hz:</label>
-                <input type="number" id="minHzSeparate" class="form-control rounded-input" min="1" max="20000" value="1">
-                <label for="maxHzSeparate">Max Hz:</label>
-                <input type="number" id="maxHzSeparate" class="form-control rounded-input" min="1" max="20000" value="20000">
+                <label for="minHz">Min Hz:</label>
+                <input type="number" id="minHz" class="form-control rounded-input" min="1" max="20000" value="1">
+                <label for="maxHz">Max Hz:</label>
+                <input type="number" id="maxHz" class="form-control rounded-input" min="1" max="20000" value="20000">
             </div>
             <div class="text-center">
-                <button id="startRandomHz" class="btn btn-success rounded-pill">Start Random Hz</button>
-                <button id="stopRandomHz" class="btn btn-warning rounded-pill">Stop Random Hz</button>
+                <button id="startRandomHz" class="btn btn-success rounded-pill">Start Random Hz Generator</button>
+                <button id="stopRandomHz" class="btn btn-warning rounded-pill">Stop Random Hz Generator</button>
             </div>
         </div>
     </div>
@@ -167,36 +165,19 @@
             });
         });
 
-        // New Random Hz Generator Functionality
-        document.getElementById('generateButton').addEventListener('click', function() {
+        // Random Hz Generator Functionality
+        document.getElementById('startRandomHz').addEventListener('click', function() {
             const minHz = parseInt(document.getElementById('minHz').value);
             const maxHz = parseInt(document.getElementById('maxHz').value);
-            const randomHz = Math.floor(Math.random() * (maxHz - minHz + 1)) + minHz;
-            document.getElementById('frequency').value = randomHz;
-            document.getElementById('freqInput').value = randomHz;
-            if (oscillator) {
-                oscillator.frequency.setValueAtTime(randomHz, audioContext.currentTime);
-            }
-        });
-
-        // Separate Random Hz System Functionality
-        document.getElementById('startRandomHz').addEventListener('click', function() {
-            const minHz = parseInt(document.getElementById('minHzSeparate').value);
-            const maxHz = parseInt(document.getElementById('maxHzSeparate').value);
             if (!randomHzInterval) {
                 randomHzInterval = setInterval(() => {
                     const randomHz = Math.floor(Math.random() * (maxHz - minHz + 1)) + minHz;
+                    document.getElementById('frequency').value = randomHz;
+                    document.getElementById('freqInput').value = randomHz;
                     if (oscillator) {
                         oscillator.frequency.setValueAtTime(randomHz, audioContext.currentTime);
                     }
-                }, 1);
-                if (!oscillator) {
-                    oscillator = audioContext.createOscillator();
-                    oscillator.type = 'sine';
-                    oscillator.frequency.setValueAtTime(minHz, audioContext.currentTime);
-                    oscillator.connect(gainNode).connect(audioContext.destination);
-                    oscillator.start();
-                }
+                }, 10); // Change frequency every second
             }
         });
 
@@ -204,10 +185,6 @@
             if (randomHzInterval) {
                 clearInterval(randomHzInterval);
                 randomHzInterval = null;
-            }
-            if (oscillator) {
-                oscillator.stop();
-                oscillator = null;
             }
         });
     </script>
