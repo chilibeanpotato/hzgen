@@ -1,1 +1,192 @@
-<!DOCTYPE html> <html> <head> <title>Hz Generator v3</title> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> <link rel="stylesheet" href="css/main.css"/> <style> .container { margin-top: 50px; max-width: 600px; background-color: #f8f9fa; border-radius: 15px; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); animation: fadeIn 2s forwards; } @keyframes fadeIn { to { opacity: 1; } } .rounded-input { border-radius: 10px; } .slider { -webkit-appearance: none; appearance: none; width: 100%; height: 15px; border-radius: 10px; background: #d3d3d3; outline: none; opacity: 0.7; -webkit-transition: .2s; transition: opacity .2s; } .slider:hover { opacity: 1; } .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 25px; height: 25px; border-radius: 50%; background: #4CAF50; cursor: pointer; } .slider::-moz-range-thumb { width: 25px; height: 25px; border-radius: 50%; background: #4CAF50; cursor: pointer; } .btn { transition: transform 0.2s, background-color 0.2s; margin: 5px; } .btn:hover { transform: scale(1.1); } .btn-primary:hover { background-color: #0056b3; } .btn-danger:hover { background-color: #c82333; } .collapse-header { cursor: pointer; } </style> </head> <body> <div class="container"> <h1 class="text-center">Hz Generator</h1> <div class="form-group"> <label for="frequency">Frequency (Hz):</label> <input type="number" id="freqInput" class="form-control rounded-input" min="1" max="20000" value="440"> <input type="range" class="form-control-range slider" id="frequency" min="1" max="20000" value="440"> </div> <div class="form-group"> <label for="volume">Volume:</label> <input type="range" class="form-control-range slider" id="volume" min="0" max="100" value="50"> </div> <div class="form-group"> <label for="waveform">Waveform:</label> <select id="waveform" class="form-control rounded-input"> <option value="sine">Sine</option> <option value="square">Square</option> <option value="sawtooth">Sawtooth</option> <option value="triangle">Triangle</option> </select> </div> <div class="text-center"> <button id="playButton" class="btn btn-primary rounded-pill">Play</button> <button id="stopButton" class="btn btn-danger rounded-pill">Stop</button> </div> <div class="text-center mt-3"> <button class="btn btn-secondary rounded-pill preset-button" data-frequency="10000">10000 Hz</button> <button class="btn btn-secondary rounded-pill preset-button" data-frequency="15000">15000 Hz</button> <button class="btn btn-secondary rounded-pill preset-button" data-frequency="16000">16000 Hz</button> <button class="btn btn-secondary rounded-pill preset-button" data-frequency="17000">17000 Hz</button> <button class="btn btn-secondary rounded-pill preset-button" data-frequency="20000">20000 Hz</button> </div> </div> <!-- Random Hz Generator Section --> <div class="container mt-5"> <h2 class="text-center collapse-header" data-toggle="collapse" data-target="#randomHzSection">Random Hz Generator</h2> <div id="randomHzSection" class="collapse show"> <div class="form-group"> <label for="minHz">Min Hz:</label> <input type="number" id="minHz" class="form-control rounded-input" min="1" max="20000" value="1"> <label for="maxHz">Max Hz:</label> <input type="number" id="maxHz" class="form-control rounded-input" min="1" max="20000" value="20000"> </div> <div class="text-center"> <button id="startRandomHz" class="btn btn-success rounded-pill">Start Random Hz Generator</button> <button id="stopRandomHz" class="btn btn-warning rounded-pill">Stop Random Hz Generator</button> </div> </div> </div> <!-- Audio Sweep Section --> <div class="container mt-5"> <h2 class="text-center collapse-header" data-toggle="collapse" data-target="#audioSweepSection">Audio Sweep</h2> <div id="audioSweepSection" class="collapse show"> <div class="form-group"> <label for="startHz">Start Hz:</label> <input type="number" id="startHz" class="form-control rounded-input" min="1" max="20000" value="440"> <label for="endHz">End Hz:</label> <input type="number" id="endHz" class="form-control rounded-input" min="1" max="20000" value="880"> <label for="sweepDuration">Duration (seconds):</label> <input type="number" id="sweepDuration" class="form-control rounded-input" min="1" value="10"> <label for="currentHz">Current Hz:</label> <input type="text" id="currentHz" class="form-control rounded-input" readonly> </div> <div class="form-group"> <label for="sweepWaveform">Waveform:</label> <select id="sweepWaveform" class="form-control rounded-input"> <option value="sine">Sine</option> <option value="square">Square</option> <option value="sawtooth">Sawtooth</option> <option value="triangle">Triangle</option> </select> </div> <div class="text-center"> <button id="startSweep" class="btn btn-info rounded-pill">Start Sweep</button> <button id="stopSweep" class="btn btn-warning rounded-pill">Stop Sweep</button> </div> </div> </div> <!-- Pulse Effect Section --> <div class="container mt-5"> <h2 class="text-center collapse-header" data-toggle="collapse" data-target="#pulseEffectSection">Pulse Effect</h2> <div id="pulseEffectSection" class="collapse show"> <div class="form-group"> <label for="pulseStartHz">Start Hz:</label> <input type="number" id="pulseStartHz" class="form-control rounded-input" min="1" max="20000" value="440"> <label for="pulseEndHz">End Hz:</label> <input type="number" id="pulseEndHz" class="form-control rounded-input" min="1" max="20000" value="880"> <label for="pulseRate">Pulse Rate (Hz):</label> <input type="number" id="pulseRate" class="form-control rounded-input" min="0.1" step="0.1" value="1"> </div> <div class="form-group"> <label for="pulseWaveform">Waveform:</label> <select id="pulseWaveform" class="form-control rounded-input"> <option value="sine">Sine</option> <option value="square">Square</option> <option value="sawtooth">Sawtooth</option> <option value="triangle">Triangle</option> </select> </div> <div class="text-center"> <button id="startPulse" class="btn btn-info rounded-pill">Start Pulse</button> <button id="stopPulse" class="btn btn-warning rounded-pill">Stop Pulse</button> </div> </div> </div> <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7H9UibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> <script src="js/my-javascript.js"></script> <script> let audioContext = new (window.AudioContext || window.webkitAudioContext)(); let oscillator; let gainNode = audioContext.createGain(); let randomHzInterval; let sweepOscillator; let sweepTimeout; let pulseOscillator; let pulseInterval; document.getElementById('frequency').addEventListener('input', function() { document.getElementById('freqInput').value = this.value; if (oscillator) { oscillator.frequency.setValueAtTime(this.value, audioContext.currentTime); } }); document.getElementById('freqInput').addEventListener('input', function() { document.getElementById('frequency').value = this.value; if (oscillator) { oscillator.frequency.setValueAtTime(this.value, audioContext.currentTime); } }); document.getElementById('volume').addEventListener('input', function() { gainNode.gain.setValueAtTime(this.value / 100, audioContext.currentTime); }); document.getElementById('playButton').addEventListener('click', function() { if (!oscillator) { oscillator = audioContext.createOscillator(); oscillator.type = document.getElementById('waveform').value; oscillator.frequency.setValueAtTime(document.getElementById('frequency').value, audioContext.currentTime); oscillator.connect(gainNode).connect(audioContext.destination); oscillator.start(); } }); document.getElementById('stopButton').addEventListener('click', function() { if (oscillator) { oscillator.stop(); oscillator = null; } }); document.querySelectorAll('.preset-button').forEach(button => { button.addEventListener('click', function() { const frequency = this.getAttribute('data-frequency'); document.getElementById('frequency').value = frequency; document.getElementById('freqInput').value = frequency; if (oscillator) { oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime); } }); }); // Random Hz Generator Functionality document.getElementById('startRandomHz').addEventListener('click', function() { const minHz = parseInt(document.getElementById('minHz').value); const maxHz = parseInt(document.getElementById('maxHz').value); if (!randomHzInterval) { randomHzInterval = setInterval(() => { const randomHz = Math.floor(Math.random() * (maxHz - minHz + 1)) + minHz; document.getElementById('frequency').value = randomHz; document.getElementById('freqInput').value = randomHz; if (oscillator) { oscillator.frequency.setValueAtTime(randomHz, audioContext.currentTime); } }, 10); // Change frequency every 10ms } }); document.getElementById('stopRandomHz').addEventListener('click', function() { if (randomHzInterval) { clearInterval(randomHzInterval); randomHzInterval = null; } }); // Audio Sweep Functionality document.getElementById('startSweep').addEventListener('click', function() { const startHz = parseFloat(document.getElementById('startHz').value); const endHz = parseFloat(document.getElementById('endHz').value); const duration = parseFloat(document.getElementById('sweepDuration').value); if (!sweepOscillator) { sweepOscillator = audioContext.createOscillator(); sweepOscillator.type = document.getElementById('sweepWaveform').value; sweepOscillator.frequency.setValueAtTime(startHz, audioContext.currentTime); sweepOscillator.connect(gainNode).connect(audioContext.destination); sweepOscillator.start(); sweepOscillator.frequency.linearRampToValueAtTime(endHz, audioContext.currentTime + duration); sweepTimeout = setTimeout(() => { sweepOscillator.stop(); sweepOscillator = null; }, duration * 1000); let startTime = audioContext.currentTime; let updateInterval = 50; // Update every 50 ms let intervalId = setInterval(() => { let elapsedTime = audioContext.currentTime - startTime; if (elapsedTime >= duration) { clearInterval(intervalId); return; } let currentHz = startHz + (endHz - startHz) * (elapsedTime / duration); document.getElementById('currentHz').value = currentHz.toFixed(2); }, updateInterval); } }); document.getElementById('stopSweep').addEventListener('click', function() { if (sweepOscillator) { sweepOscillator.stop(); sweepOscillator = null; } if (sweepTimeout) { clearTimeout(sweepTimeout); sweepTimeout = null; } document.getElementById('currentHz').value = document.getElementById('startHz').value; }); // Pulse Effect Functionality document.getElementById('startPulse').addEventListener('click', function() { const startHz = parseFloat(document.getElementById('pulseStartHz').value); const endHz = parseFloat(document.getElementById('pulseEndHz').value); const pulseRate = parseFloat(document.getElementById('pulseRate').value); if (!pulseOscillator) { pulseOscillator = audioContext.createOscillator(); pulseOscillator.type = document.getElementById('pulseWaveform').value; pulseOscillator.frequency.setValueAtTime(startHz, audioContext.currentTime); pulseOscillator.connect(gainNode).connect(audioContext.destination); pulseOscillator.start(); let currentHz = startHz; let increasing = true; pulseInterval = setInterval(() => { if (increasing) { currentHz += pulseRate; if (currentHz >= endHz) { currentHz = endHz; increasing = false; } } else { currentHz -= pulseRate; if (currentHz <= startHz) { currentHz = startHz; increasing = true; } } pulseOscillator.frequency.setValueAtTime(currentHz, audioContext.currentTime); }, 1000 / pulseRate); // Adjust the interval based on the pulse rate } }); document.getElementById('stopPulse').addEventListener('click', function() { if (pulseOscillator) { pulseOscillator.stop(); pulseOscillator = null; } if (pulseInterval) { clearInterval(pulseInterval); pulseInterval = null; } }); </script> </body> </html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>hzgenV4</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css"/>
+    <style>
+        .container {
+            margin-top: 50px;
+            max-width: 600px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        .rounded-input {
+            border-radius: 10px;
+        }
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 10px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+        .btn {
+            transition: transform 0.2s, background-color 0.2s;
+            margin: 5px;
+        }
+        .btn:hover {
+            transform: scale(1.1);
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Hz Generator</h1>
+        <div class="form-group">
+            <label for="frequency">Frequency (Hz):</label>
+            <input type="number" id="freqInput" class="form-control rounded-input" min="1" max="20000" value="440">
+            <input type="range" class="form-control-range slider" id="frequency" min="1" max="20000" value="440">
+        </div>
+        <div class="form-group">
+            <label for="volume">Volume:</label>
+            <input type="range" class="form-control-range slider" id="volume" min="0" max="100" value="50">
+        </div>
+        <div class="text-center">
+            <button id="playButton" class="btn btn-primary rounded-pill">Play</button>
+            <button id="stopButton" class="btn btn-danger rounded-pill">Stop</button>
+        </div>
+        <div class="text-center mt-3">
+            <button class="btn btn-secondary rounded-pill preset-button" data-frequency="10000">10000 Hz</button>
+            <button class="btn btn-secondary rounded-pill preset-button" data-frequency="15000">15000 Hz</button>
+            <button class="btn btn-secondary rounded-pill preset-button" data-frequency="16000">16000 Hz</button>
+            <button class="btn btn-secondary rounded-pill preset-button" data-frequency="17000">17000 Hz</button>
+            <button class="btn btn-secondary rounded-pill preset-button" data-frequency="20000">20000 Hz</button>
+        </div>
+
+        <!-- Random Hz Generator Section -->
+        <div class="container mt-5">
+            <h2 class="text-center">Random Hz Generator</h2>
+            <div class="form-group">
+                <label for="minHz">Min Hz:</label>
+                <input type="number" id="minHz" class="form-control rounded-input" min="1" max="20000" value="1">
+                <label for="maxHz">Max Hz:</label>
+                <input type="number" id="maxHz" class="form-control rounded-input" min="1" max="20000" value="20000">
+            </div>
+            <div class="text-center">
+                <button id="startRandomHz" class="btn btn-success rounded-pill">Start Random Hz Generator</button>
+                <button id="stopRandomHz" class="btn btn-warning rounded-pill">Stop Random Hz Generator</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="js/my-javascript.js"></script>
+    <script>
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let oscillator;
+        let gainNode = audioContext.createGain();
+        let randomHzInterval;
+
+        document.getElementById('frequency').addEventListener('input', function() {
+            document.getElementById('freqInput').value = this.value;
+            if (oscillator) {
+                oscillator.frequency.setValueAtTime(this.value, audioContext.currentTime);
+            }
+        });
+
+        document.getElementById('freqInput').addEventListener('input', function() {
+            document.getElementById('frequency').value = this.value;
+            if (oscillator) {
+                oscillator.frequency.setValueAtTime(this.value, audioContext.currentTime);
+            }
+        });
+
+        document.getElementById('volume').addEventListener('input', function() {
+            gainNode.gain.setValueAtTime(this.value / 100, audioContext.currentTime);
+        });
+
+        document.getElementById('playButton').addEventListener('click', function() {
+            if (!oscillator) {
+                oscillator = audioContext.createOscillator();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(document.getElementById('frequency').value, audioContext.currentTime);
+                oscillator.connect(gainNode).connect(audioContext.destination);
+                oscillator.start();
+            }
+        });
+
+        document.getElementById('stopButton').addEventListener('click', function() {
+            if (oscillator) {
+                oscillator.stop();
+                oscillator = null;
+            }
+        });
+
+        document.querySelectorAll('.preset-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const frequency = this.getAttribute('data-frequency');
+                document.getElementById('frequency').value = frequency;
+                document.getElementById('freqInput').value = frequency;
+                if (oscillator) {
+                    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                }
+            });
+        });
+
+        // Random Hz Generator Functionality
+        document.getElementById('startRandomHz').addEventListener('click', function() {
+            const minHz = parseInt(document.getElementById('minHz').value);
+            const maxHz = parseInt(document.getElementById('maxHz').value);
+            if (!randomHzInterval) {
+                randomHzInterval = setInterval(() => {
+                    const randomHz = Math.floor(Math.random() * (maxHz - minHz + 1)) + minHz;
+                    document.getElementById('frequency').value = randomHz;
+                    document.getElementById('freqInput').value = randomHz;
+                    if (oscillator) {
+                        oscillator.frequency.setValueAtTime(randomHz, audioContext.currentTime);
+                    }
+                }, 10); // Change frequency every second
+            }
+        });
+
+        document.getElementById('stopRandomHz').addEventListener('click', function() {
+            if (randomHzInterval) {
+                clearInterval(randomHzInterval);
+                randomHzInterval = null;
+            }
+        });
+    </script>
+</body>
+</html>
